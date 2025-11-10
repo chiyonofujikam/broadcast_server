@@ -101,7 +101,7 @@ broadcast-server connect
 You can open multiple clients (each in its own terminal).
 When one sends a message, all other connected clients receive it instantly.
 
-Logs will be saved to `client.log`.
+Logs will be saved to `.logs/client.log`.
 
 ---
 

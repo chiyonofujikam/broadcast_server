@@ -52,7 +52,7 @@ This project is ideal for learning async networking in Python, or as a base for 
    ```bash
    git clone https://github.com/chiyonofujikam/broadcast_server.git
    cd broadcast_server
-````
+
 
 2. Create and sync your environment using **uv**:
 
@@ -86,7 +86,7 @@ ws://localhost:<PORT>
 
 By default, the port is defined in `config.py` (example: `8088`).
 
-Logs will be saved to `server.log`.
+Logs will be saved to `.logs/server.log`.
 
 ---
 

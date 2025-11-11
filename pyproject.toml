@@ -14,11 +14,3 @@ dependencies = [
 
 [project.scripts]
 broadcast-server = "broadcast_server.cli:main"
-
-[tool.uv]
-package = true
-
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["broadcast_server*"]
-exclude = ["logs*"]

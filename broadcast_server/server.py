@@ -1,10 +1,12 @@
 import asyncio
-import websockets
 import logging
+
+import websockets
 from config import config
 
 logging.basicConfig(
-    level=logging.INFO,  # Change to DEBUG for more detail
+    # Change to DEBUG for more detail
+    level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
     handlers=[
         # logs to file
@@ -23,6 +25,7 @@ async def broadcast(message: str, exclude=None):
     for client in connected_clients:
         if client == exclude:
             continue
+
         try:
             await client.send(message)
         except websockets.exceptions.ConnectionClosed:
@@ -53,11 +56,11 @@ async def handle_client(websocket):
             # broadcast the sended message
             await broadcast(f"Client {client_id}: {message}", exclude=websocket)
 
-    except websockets.exceptions.ConnectionClosedError as e:
-        logging.warning(f"Client {client_id} disconnected with error: {e}")
+    except websockets.exceptions.ConnectionClosedError as err:
+        logging.warning(f"Client {client_id} disconnected with error: {err}")
 
-    except Exception as e:
-        logging.error(f"Unexpected error from client {client_id}: {e}", exc_info=True)
+    except Exception as err:
+        logging.error(f"Unexpected error from client {client_id}: {err}", exc_info=True)
 
     finally:
         connected_clients.discard(websocket)
@@ -70,6 +73,7 @@ async def main():
     """ Main function to start the WebSocket server """
     async with websockets.serve(handle_client, config.SERVER_HOST, config.SERVER_PORT):
         print(f"✅ Server started at ws://{config.SERVER_HOST}:{config.SERVER_PORT}")
+        # running forever
         await asyncio.Future()
 
 if __name__ == "__main__":

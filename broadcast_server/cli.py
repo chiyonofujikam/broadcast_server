@@ -1,7 +1,7 @@
 import argparse
+import os
 import subprocess
 import sys
-import os
 
 # folder containing cli.py
 PACKAGE_DIR = os.path.dirname(__file__)
@@ -9,31 +9,24 @@ PACKAGE_DIR = os.path.dirname(__file__)
 def main():
     parser = argparse.ArgumentParser(
         description="Broadcast Server CLI",
-        usage="broadcast-server <command> [options]"
+        usage="broadcast-server <command>"
     )
 
-    subparsers = parser.add_subparsers(
-        dest="command",
-        required=True
-    )
-
-    parser_start = subparsers.add_parser(
-        "start", help="Start the broadcast server"
-    )
-
-    parser_connect = subparsers.add_parser(
-        "connect", help="Connect to a broadcast server"
-    )
+    subparsers = parser.add_subparsers(dest="action", required=True)
+    subparsers.add_parser("start", help="Start the broadcast server")
+    subparsers.add_parser("connect", help="Connect to a broadcast server")
 
     args = parser.parse_args()
 
-    if args.command == "start":
-        cmd = [sys.executable, os.path.join(PACKAGE_DIR, "server.py")]
+    COMMANDS = {
+        "start": "server.py",
+        "connect": "client.py",
+        "status": "status.py",
+    }
 
-    elif args.command == "connect":
-        cmd = [sys.executable, os.path.join(PACKAGE_DIR, "client.py")]
-    else:
-        print("❌ Please choose either 'start' or 'connect'.")
+    cmd_file = COMMANDS.get(args.action, None)
+    if not cmd_file:
+        print("❌ Unknown command.")
         sys.exit(1)
 
-    subprocess.run(cmd)
+    subprocess.run([sys.executable, os.path.join(PACKAGE_DIR, cmd_file)])
